@@ -558,84 +558,50 @@
       }
     }
 
-    // ===================== Presets & Actions =====================
-    function loadTransport(){
-      // Sistema exacto:
-      // 4 x_C + 6 x_M + 8 x_L = 80
-      // 10 x_C + 20 x_M + 25 x_L = 200
-      // 5 x_C + 4 x_M + 6 x_L = 100
-      const A = [ [4,6,8], [10,20,25], [5,4,6] ];
-      const b = [80,200,100];
-      setMatrixA(A); setVectorB(b);
-      document.querySelector('#cbxScale').checked = false; toggleScaling(false);
-      $('#scaleR1').value = 1; $('#scaleR2').value = 1; $('#scaleR3').value = 1;
-    }
+    <script>
+// ===================== Presets & Actions =====================
+function loadTransport(){
+  // Sistema exacto de tu captura:
+  // 4 C + 6 M + 8 L = 80
+  // 10 C + 20 M + 25 L = 200
+  // 5 C + 4 M + 6 L = 100
+  const A = [ [4,6,8], [10,20,25], [5,4,6] ];
+  const b = [80,200,100];
 
-    function readProblem(){
-      let A = getMatrixA(); let b = getVectorB();
-      if (document.querySelector('#cbxScale').checked){
-        const s1 = parseFloat($('#scaleR1').value||'1');
-        const s2 = parseFloat($('#scaleR2').value||'1');
-        const s3 = parseFloat($('#scaleR3').value||'1');
-        const scaled = applyRowScaling(A,b,s1,s2,s3); A = scaled.A2; b = scaled.b2;
-      }
-      return {A,b};
-    }
+  setMatrixA(A);
+  setVectorB(b);
 
-    function solveSOR(){
-      const {A,b} = readProblem();
-      const omega = parseFloat($('#omega').value||'1.2');
-      const tol = parseFloat($('#tolSOR').value||'1e-8');
-      const maxIt = parseInt($('#maxItSOR').value||'1000', 10);
-      return SOR(A,b,{omega,tol,maxIt});
-    }
-    function solveCG(){
-      const {A,b} = readProblem();
-      const tol = parseFloat($('#tolCG').value||'1e-8');
-      const maxIt = parseInt($('#maxItCG').value||'1000', 10);
-      return CG_on_normal_eq(A,b,{tol,maxIt});
-    }
+  // Escalado desactivado
+  $('#cbxScale').checked = false;
+  toggleScaling(false);
+  $('#scaleR1').value = 1;
+  $('#scaleR2').value = 1;
+  $('#scaleR3').value = 1;
 
-    function renderAll(sor, cg){
-      const {A,b} = readProblem();
-      updateSolutionsTable(sor, cg);
-      updateValidation(A,b,sor,cg);
-      buildResidualChart(sor, cg);
-      buildXCharts(sor, cg);
-      fillIterationTables(sor, cg);
-    }
+  // Parámetros como en tu panel
+  $('#omega').value = 1.00;            // SOR ω
+  $('#omegaVal').textContent = '1.00';
+  $('#tolSOR').value = 0.001;          // SOR tol
+  $('#maxItSOR').value = 1000;         // SOR max it
+  $('#tolCG').value = '1e-8';          // CG tol
+  $('#maxItCG').value = 1000;          // CG max it
+}
 
-    function toggleScaling(on){
-      const panel = document.querySelector('#scalePanel');
-      if (on){ panel.classList.remove('opacity-40','pointer-events-none'); }
-      else { panel.classList.add('opacity-40','pointer-events-none'); }
-    }
+function init(){
+  buildInputs();
+  loadTransport();  // arranca ya con el ejemplo correcto
 
-    function clearAll(){
-      setMatrixA([[0,0,0],[0,0,0],[0,0,0]]); setVectorB([0,0,0]);
-      updateSolutionsTable(null,null);
-      $('#valSOR').innerHTML = '';
-      $('#valCG').innerHTML = '';
-      fillIterationTables(null,null);
-      if (chartResidual) chartResidual.destroy();
-      if (chartXSOR) chartXSOR.destroy();
-      if (chartXCG) chartXCG.destroy();
-    }
+  $('#btnLoadTransport').addEventListener('click', loadTransport);
+  $('#btnClear').addEventListener('click', clearAll);
+  $('#btnSolveSOR').addEventListener('click', ()=>{ const sor = solveSOR(); renderAll(sor, null); });
+  $('#btnSolveCG').addEventListener('click', ()=>{ const cg = solveCG(); renderAll(null, cg); });
+  $('#btnSolveBoth').addEventListener('click', ()=>{ const sor = solveSOR(); const cg = solveCG(); renderAll(sor, cg); });
 
-    // ===================== INIT =====================
-    function init(){
-      buildInputs();
-      loadTransport();
+  $('#omega').addEventListener('input', (e)=> $('#omegaVal').textContent = parseFloat(e.target.value).toFixed(2));
+  $('#cbxScale').addEventListener('change', (e)=> toggleScaling(e.target.checked));
+}
+</script>
 
-      $('#btnLoadTransport').addEventListener('click', loadTransport);
-      $('#btnClear').addEventListener('click', clearAll);
-      $('#btnSolveSOR').addEventListener('click', ()=>{ const sor = solveSOR(); renderAll(sor, null); });
-      $('#btnSolveCG').addEventListener('click', ()=>{ const cg = solveCG(); renderAll(null, cg); });
-      $('#btnSolveBoth').addEventListener('click', ()=>{ const sor = solveSOR(); const cg = solveCG(); renderAll(sor, cg); });
-
-      $('#omega').addEventListener('input', (e)=> $('#omegaVal').textContent = parseFloat(e.target.value).toFixed(2));
-      $('#cbxScale').addEventListener('change', (e)=> toggleScaling(e.target.checked));
-    }
 
     document.addEventListener('DOMContentLoaded', init);
   </script>

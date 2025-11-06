@@ -11,8 +11,8 @@
   <!-- MathJax for LaTeX rendering (lightweight config) -->
   <script>
     window.MathJax = {
-      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
-      svg: {fontCache: 'global'}
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
@@ -48,7 +48,7 @@
         <!-- Matrix + b -->
         <div class="flex-1">
           <div class="flex items-center justify-between mb-3">
-            <h2 class="text-lg font-semibold">Modelo $A\\,x=b$ — Ejemplo de Transporte</h2>
+            <h2 class="text-lg font-semibold">Modelo $A\,x=b$ — Ejemplo de Transporte</h2>
             <div class="flex gap-2">
               <button id="btnLoadTransport" class="px-3 py-1.5 text-sm rounded-lg bg-indigo-600 hover:bg-indigo-500 transition">Cargar ejemplo</button>
               <button id="btnClear" class="px-3 py-1.5 text-sm rounded-lg bg-slate-700 hover:bg-slate-600 transition">Limpiar</button>
@@ -66,7 +66,7 @@
             <div>
               <div class="mb-1 text-sm text-slate-300">Recursos disponibles $b$ (3×1)</div>
               <div id="Binputs" class="grid grid-cols-1 gap-2"></div>
-              <div class="mt-2 text-xs text-slate-400">$b=[\\text{Horas},\\ \\text{Combustible},\\ \\text{Mantenimiento}]^\\top$</div>
+              <div class="mt-2 text-xs text-slate-400">$b=[\text{Horas},\ \text{Combustible},\ \text{Mantenimiento}]^\top$</div>
             </div>
           </div>
 
@@ -104,7 +104,7 @@
             <div class="space-y-2">
               <div class="text-sm text-slate-300">SOR</div>
               <div class="flex items-center gap-3">
-                <label class="text-xs w-16">$\\omega$</label>
+                <label class="text-xs w-16">$\omega$</label>
                 <input id="omega" type="range" min="0.5" max="1.95" step="0.01" value="1.20" class="w-full" />
                 <span id="omegaVal" class="text-sm tabular-nums w-12 text-right">1.20</span>
               </div>
@@ -121,7 +121,7 @@
             </div>
 
             <div class="pt-2 border-t border-slate-800 space-y-2">
-              <div class="text-sm text-slate-300">CG (sobre $A^\\top A$)</div>
+              <div class="text-sm text-slate-300">CG (sobre $A^\top A$)</div>
               <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label class="text-xs">tol</label>
@@ -139,7 +139,7 @@
               <button id="btnSolveSOR" class="px-3 py-2 rounded-lg bg-fuchsia-600/90 hover:bg-fuchsia-600 transition">Solo SOR</button>
               <button id="btnSolveCG" class="px-3 py-2 rounded-lg bg-emerald-600/90 hover:bg-emerald-600 transition">Solo CG</button>
             </div>
-            <div class="text-xs text-slate-400">Tip: si SOR no converge, intenta bajar $\\omega$ o reescalar ecuaciones.</div>
+            <div class="text-xs text-slate-400">Tip: si SOR no converge, intenta bajar $\omega$ o reescalar ecuaciones.</div>
           </div>
         </div>
       </div>
@@ -159,7 +159,7 @@
                 <th class="text-right">$x_M$</th>
                 <th class="text-right">$x_L$</th>
                 <th class="text-right">iter</th>
-                <th class="text-right">$\\lVert r\\rVert_2$</th>
+                <th class="text-right">$\lVert r\rVert_2$</th>
                 <th class="text-right">ms</th>
               </tr>
             </thead>
@@ -170,25 +170,25 @@
 
       <!-- Validation -->
       <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-lg shadow-indigo-500/5">
-        <h3 class="text-lg font-semibold mb-2">Validación $A\\,x$ vs $b$</h3>
+        <h3 class="text-lg font-semibold mb-2">Validación $A\,x$ vs $b$</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <div class="text-sm mb-1">$A\\,x_{SOR}$</div>
+            <div class="text-sm mb-1">$A\,x_{SOR}$</div>
             <ul id="valSOR" class="text-sm space-y-1 text-slate-300"></ul>
           </div>
           <div>
-            <div class="text-sm mb-1">$A\\,x_{CG}$</div>
+            <div class="text-sm mb-1">$A\,x_{CG}$</div>
             <ul id="valCG" class="text-sm space-y-1 text-slate-300"></ul>
           </div>
         </div>
-        <p class="mt-3 text-xs text-slate-400">Mostramos $A\\,x$ para comparar con $b$ (residuo pequeño = buen ajuste).</p>
+        <p class="mt-3 text-xs text-slate-400">Mostramos $A\,x$ para comparar con $b$ (residuo pequeño = buen ajuste).</p>
       </div>
     </section>
 
     <!-- Charts -->
     <section class="fade-up grid lg:grid-cols-2 gap-6">
       <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-        <h3 class="font-semibold mb-2">Convergencia — $\\lVert r_k\\rVert_2$ (Original: $r=b-Ax$)</h3>
+        <h3 class="font-semibold mb-2">Convergencia — $\lVert r_k\rVert_2$ (Original: $r=b-Ax$)</h3>
         <canvas id="residualChart" height="160"></canvas>
         <div class="mt-3 text-xs sm:text-sm text-slate-300 space-y-1">
           <div class="font-medium">¿Cómo leer este gráfico?</div>
@@ -239,8 +239,8 @@
                   <th class="text-right">$x_C$</th>
                   <th class="text-right">$x_M$</th>
                   <th class="text-right">$x_L$</th>
-                  <th class="text-right">$\\lVert r\\rVert_2$</th>
-                  <th class="text-right">$\\lVert\\Delta x\\rVert_\\infty$</th>
+                  <th class="text-right">$\lVert r\rVert_2$</th>
+                  <th class="text-right">$\lVert\Delta x\rVert_\infty$</th>
                 </tr>
               </thead>
               <tbody id="tblSOR" class="divide-y divide-slate-800"></tbody>
@@ -259,9 +259,9 @@
                   <th class="text-right">$x_C$</th>
                   <th class="text-right">$x_M$</th>
                   <th class="text-right">$x_L$</th>
-                  <th class="text-right">$\\lVert r\\rVert_2$</th>
-                  <th class="text-right">$\\alpha$</th>
-                  <th class="text-right">$\\beta$</th>
+                  <th class="text-right">$\lVert r\rVert_2$</th>
+                  <th class="text-right">$\alpha$</th>
+                  <th class="text-right">$\beta$</th>
                 </tr>
               </thead>
               <tbody id="tblCG" class="divide-y divide-slate-800"></tbody>
@@ -277,14 +277,14 @@
       <div class="grid md:grid-cols-2 gap-6 text-sm text-slate-300">
         <div>
           <h4 class="font-semibold mb-1">SOR (Sobre-Relajación Sucesiva)</h4>
-          <p class="mb-2">Actualiza variable por variable con un factor $\\omega$ que puede acelerar la convergencia.</p>
-          <p class="p-3 rounded-lg bg-slate-800/70 border border-slate-700">$$x_i^{(k+1)}=(1-\\omega)x_i^{(k)}+\\frac{\\omega}{a_{ii}}\\Big(b_i-\\sum_{j<i}a_{ij}x_j^{(k+1)}-\\sum_{j>i}a_{ij}x_j^{(k)}\\Big).$$</p>
-          <p class="text-xs text-slate-400">Si no converge, reduce $\\omega$ o reescala ecuaciones.</p>
+          <p class="mb-2">Actualiza variable por variable con un factor $\omega$ que puede acelerar la convergencia.</p>
+          <p class="p-3 rounded-lg bg-slate-800/70 border border-slate-700">$$x_i^{(k+1)}=(1-\omega)x_i^{(k)}+\frac{\omega}{a_{ii}}\Big(b_i-\sum_{j<i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\Big).$$</p>
+          <p class="text-xs text-slate-400">Si no converge, reduce $\omega$ o reescala ecuaciones.</p>
         </div>
         <div>
           <h4 class="font-semibold mb-1">CG (Gradiente Conjugado)</h4>
-          <p class="mb-2">Trabajamos sobre $M=A^\\top A$ y $c=A^\\top b$ (SPD). Comparamos el residuo respecto a $A$.</p>
-          <p class="p-3 rounded-lg bg-slate-800/70 border border-slate-700">$$\\alpha_k=\\frac{r_k^\\top r_k}{p_k^\\top M p_k},\\qquad \\beta_k=\\frac{r_{k+1}^\\top r_{k+1}}{r_k^\\top r_k}.$$</p>
+          <p class="mb-2">Trabajamos sobre $M=A^\top A$ y $c=A^\top b$ (SPD). Comparamos el residuo respecto a $A$.</p>
+          <p class="p-3 rounded-lg bg-slate-800/70 border border-slate-700">$$\alpha_k=\frac{r_k^\top r_k}{p_k^\top M p_k},\qquad \beta_k=\frac{r_{k+1}^\top r_{k+1}}{r_k^\top r_k}.$$</p>
           <p class="text-xs text-slate-400">Residuo original: $r=b-Ax$.</p>
         </div>
       </div>
@@ -410,7 +410,7 @@
     // ===================== UI Updates =====================
     let chartResidual=null, chartXSOR=null, chartXCG=null;
 
-    const fmt=(x,d=6)=> (isFinite(x)? Number.parseFloat(x).toFixed(d).replace(/\\.0+$/,'') : '—');
+    const fmt=(x,d=6)=> (isFinite(x)? Number.parseFloat(x).toFixed(d).replace(/\.0+$/,'') : '—');
 
     function updateSolutionsTable(sor, cg){
       const host = document.querySelector('#tblSolutions'); host.innerHTML = '';
@@ -446,7 +446,8 @@
         const Axv = Ax(A,x.x);
         return Axv.map((val,i)=>{
           const err = Math.abs(val - b[i]);
-          return `<li>fila ${i+1}: <span class="text-slate-200">${fmt(val,6)}</span> · b=${fmt(b[i],6)} · error=${fmt(err,2)}</li>`
+          return `<li>fila ${i+1}: <span class="text-slate-2
+00">${fmt(val,6)}</span> · b=${fmt(b[i],6)} · error=${fmt(err,2)}</li>`
         }).join('');
       }
       document.querySelector('#valSOR').innerHTML = listFor(sor);
@@ -559,7 +560,7 @@
 
     // ===================== Presets & Actions =====================
     function loadTransport(){
-      // Tu sistema exacto:
+      // Sistema exacto:
       // 4 x_C + 6 x_M + 8 x_L = 80
       // 10 x_C + 20 x_M + 25 x_L = 200
       // 5 x_C + 4 x_M + 6 x_L = 100
@@ -567,15 +568,15 @@
       const b = [80,200,100];
       setMatrixA(A); setVectorB(b);
       document.querySelector('#cbxScale').checked = false; toggleScaling(false);
-      document.querySelector('#scaleR1').value = 1; document.querySelector('#scaleR2').value = 1; document.querySelector('#scaleR3').value = 1;
+      $('#scaleR1').value = 1; $('#scaleR2').value = 1; $('#scaleR3').value = 1;
     }
 
     function readProblem(){
       let A = getMatrixA(); let b = getVectorB();
       if (document.querySelector('#cbxScale').checked){
-        const s1 = parseFloat(document.querySelector('#scaleR1').value||'1');
-        const s2 = parseFloat(document.querySelector('#scaleR2').value||'1');
-        const s3 = parseFloat(document.querySelector('#scaleR3').value||'1');
+        const s1 = parseFloat($('#scaleR1').value||'1');
+        const s2 = parseFloat($('#scaleR2').value||'1');
+        const s3 = parseFloat($('#scaleR3').value||'1');
         const scaled = applyRowScaling(A,b,s1,s2,s3); A = scaled.A2; b = scaled.b2;
       }
       return {A,b};
@@ -583,15 +584,15 @@
 
     function solveSOR(){
       const {A,b} = readProblem();
-      const omega = parseFloat(document.querySelector('#omega').value||'1.2');
-      const tol = parseFloat(document.querySelector('#tolSOR').value||'1e-8');
-      const maxIt = parseInt(document.querySelector('#maxItSOR').value||'1000', 10);
+      const omega = parseFloat($('#omega').value||'1.2');
+      const tol = parseFloat($('#tolSOR').value||'1e-8');
+      const maxIt = parseInt($('#maxItSOR').value||'1000', 10);
       return SOR(A,b,{omega,tol,maxIt});
     }
     function solveCG(){
       const {A,b} = readProblem();
-      const tol = parseFloat(document.querySelector('#tolCG').value||'1e-8');
-      const maxIt = parseInt(document.querySelector('#maxItCG').value||'1000', 10);
+      const tol = parseFloat($('#tolCG').value||'1e-8');
+      const maxIt = parseInt($('#maxItCG').value||'1000', 10);
       return CG_on_normal_eq(A,b,{tol,maxIt});
     }
 
@@ -613,8 +614,8 @@
     function clearAll(){
       setMatrixA([[0,0,0],[0,0,0],[0,0,0]]); setVectorB([0,0,0]);
       updateSolutionsTable(null,null);
-      document.querySelector('#valSOR').innerHTML = '';
-      document.querySelector('#valCG').innerHTML = '';
+      $('#valSOR').innerHTML = '';
+      $('#valCG').innerHTML = '';
       fillIterationTables(null,null);
       if (chartResidual) chartResidual.destroy();
       if (chartXSOR) chartXSOR.destroy();
@@ -626,14 +627,14 @@
       buildInputs();
       loadTransport();
 
-      document.querySelector('#btnLoadTransport').addEventListener('click', loadTransport);
-      document.querySelector('#btnClear').addEventListener('click', clearAll);
-      document.querySelector('#btnSolveSOR').addEventListener('click', ()=>{ const sor = solveSOR(); renderAll(sor, null); });
-      document.querySelector('#btnSolveCG').addEventListener('click', ()=>{ const cg = solveCG(); renderAll(null, cg); });
-      document.querySelector('#btnSolveBoth').addEventListener('click', ()=>{ const sor = solveSOR(); const cg = solveCG(); renderAll(sor, cg); });
+      $('#btnLoadTransport').addEventListener('click', loadTransport);
+      $('#btnClear').addEventListener('click', clearAll);
+      $('#btnSolveSOR').addEventListener('click', ()=>{ const sor = solveSOR(); renderAll(sor, null); });
+      $('#btnSolveCG').addEventListener('click', ()=>{ const cg = solveCG(); renderAll(null, cg); });
+      $('#btnSolveBoth').addEventListener('click', ()=>{ const sor = solveSOR(); const cg = solveCG(); renderAll(sor, cg); });
 
-      document.querySelector('#omega').addEventListener('input', (e)=> document.querySelector('#omegaVal').textContent = parseFloat(e.target.value).toFixed(2));
-      document.querySelector('#cbxScale').addEventListener('change', (e)=> toggleScaling(e.target.checked));
+      $('#omega').addEventListener('input', (e)=> $('#omegaVal').textContent = parseFloat(e.target.value).toFixed(2));
+      $('#cbxScale').addEventListener('change', (e)=> toggleScaling(e.target.checked));
     }
 
     document.addEventListener('DOMContentLoaded', init);

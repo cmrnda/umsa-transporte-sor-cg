@@ -70,7 +70,7 @@
             </div>
           </div>
 
-          <!-- Row scaling (cambio de unidades por recurso) -->
+          <!-- Row scaling -->
           <div class="mt-4 rounded-xl border border-slate-800 p-3 bg-slate-900/70">
             <div class="flex items-center justify-between">
               <div class="text-sm font-medium">Cambio de unidades (escalado de ecuaciones)</div>
@@ -105,13 +105,13 @@
               <div class="text-sm text-slate-300">SOR</div>
               <div class="flex items-center gap-3">
                 <label class="text-xs w-16">$\omega$</label>
-                <input id="omega" type="range" min="0.5" max="1.95" step="0.01" value="1.20" class="w-full" />
-                <span id="omegaVal" class="text-sm tabular-nums w-12 text-right">1.20</span>
+                <input id="omega" type="range" min="0.5" max="1.95" step="0.01" value="1.00" class="w-full" />
+                <span id="omegaVal" class="text-sm tabular-nums w-12 text-right">1.00</span>
               </div>
               <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label class="text-xs">tol</label>
-                  <input id="tolSOR" type="number" step="1e-8" value="1e-8" class="w-full mt-1 px-3 py-2 rounded-lg bg-slate-800/70 border border-slate-700" />
+                  <input id="tolSOR" type="number" step="1e-8" value="0.001" class="w-full mt-1 px-3 py-2 rounded-lg bg-slate-800/70 border border-slate-700" />
                 </div>
                 <div>
                   <label class="text-xs">max it</label>
@@ -296,7 +296,7 @@
   </main>
 
   <script>
-    // ===================== Utility helpers =====================
+    // ===== Utility helpers =====
     const $ = (q) => document.querySelector(q);
 
     function buildInputs(){
@@ -339,7 +339,7 @@
       inputs.forEach((el,idx)=> el.value = (b[idx] ?? 0));
     }
 
-    // Linear algebra helpers
+    // Lin alg helpers
     const clone = (m) => JSON.parse(JSON.stringify(m));
     const dot = (u,v) => u.reduce((s,ui,i)=> s + ui*v[i], 0);
     const norm2 = (u) => Math.sqrt(dot(u,u));
@@ -370,7 +370,7 @@
       return {A2,b2};
     }
 
-    // ===================== Solvers =====================
+    // ===== Solvers =====
     function SOR(A, b, {omega=1.2, tol=1e-8, maxIt=1000}={}){
       const t0 = performance.now();
       const n=3; let x = [0,0,0];
@@ -407,9 +407,8 @@
       return {x, it: xs.length, residuals: resA, xs, alphas, betas, time: performance.now()-t0};
     }
 
-    // ===================== UI Updates =====================
+    // ===== UI Updates =====
     let chartResidual=null, chartXSOR=null, chartXCG=null;
-
     const fmt=(x,d=6)=> (isFinite(x)? Number.parseFloat(x).toFixed(d).replace(/\.0+$/,'') : '—');
 
     function updateSolutionsTable(sor, cg){
@@ -446,8 +445,7 @@
         const Axv = Ax(A,x.x);
         return Axv.map((val,i)=>{
           const err = Math.abs(val - b[i]);
-          return `<li>fila ${i+1}: <span class="text-slate-2
-00">${fmt(val,6)}</span> · b=${fmt(b[i],6)} · error=${fmt(err,2)}</li>`
+          return `<li>fila ${i+1}: <span class="text-slate-200">${fmt(val,6)}</span> · b=${fmt(b[i],6)} · error=${fmt(err,2)}</li>`
         }).join('');
       }
       document.querySelector('#valSOR').innerHTML = listFor(sor);
@@ -480,7 +478,7 @@
     }
 
     function buildXCharts(sor, cg){
-      // SOR components
+      // SOR
       const ctx1 = document.querySelector('#componentsSORChart');
       if (chartXSOR) chartXSOR.destroy();
       if (sor && sor.xs.length){
@@ -499,7 +497,7 @@
         });
       } else { ctx1.getContext('2d').clearRect(0,0,ctx1.width,ctx1.height); }
 
-      // CG components
+      // CG
       const ctx2 = document.querySelector('#componentsCGChart');
       if (chartXCG) chartXCG.destroy();
       if (cg && cg.xs.length){
@@ -558,50 +556,100 @@
       }
     }
 
-    <script>
-// ===================== Presets & Actions =====================
-function loadTransport(){
-  // Sistema exacto de tu captura:
-  // 4 C + 6 M + 8 L = 80
-  // 10 C + 20 M + 25 L = 200
-  // 5 C + 4 M + 6 L = 100
-  const A = [ [4,6,8], [10,20,25], [5,4,6] ];
-  const b = [80,200,100];
+    // ===== Presets & Actions =====
+    function loadTransport(){
+      // Sistema exacto (tu captura):
+      // 4 C + 6 M + 8 L = 80
+      // 10 C + 20 M + 25 L = 200
+      // 5 C + 4 M + 6 L = 100
+      const A = [ [4,6,8], [10,20,25], [5,4,6] ];
+      const b = [80,200,100];
 
-  setMatrixA(A);
-  setVectorB(b);
+      setMatrixA(A);
+      setVectorB(b);
 
-  // Escalado desactivado
-  $('#cbxScale').checked = false;
-  toggleScaling(false);
-  $('#scaleR1').value = 1;
-  $('#scaleR2').value = 1;
-  $('#scaleR3').value = 1;
+      // Escalado desactivado
+      $('#cbxScale').checked = false;
+      toggleScaling(false);
+      $('#scaleR1').value = 1;
+      $('#scaleR2').value = 1;
+      $('#scaleR3').value = 1;
 
-  // Parámetros como en tu panel
-  $('#omega').value = 1.00;            // SOR ω
-  $('#omegaVal').textContent = '1.00';
-  $('#tolSOR').value = 0.001;          // SOR tol
-  $('#maxItSOR').value = 1000;         // SOR max it
-  $('#tolCG').value = '1e-8';          // CG tol
-  $('#maxItCG').value = 1000;          // CG max it
-}
+      // Parámetros como en tu panel
+      $('#omega').value = 1.00;
+      $('#omegaVal').textContent = '1.00';
+      $('#tolSOR').value = 0.001;
+      $('#maxItSOR').value = 1000;
 
-function init(){
-  buildInputs();
-  loadTransport();  // arranca ya con el ejemplo correcto
+      $('#tolCG').value = '1e-8';
+      $('#maxItCG').value = 1000;
+    }
 
-  $('#btnLoadTransport').addEventListener('click', loadTransport);
-  $('#btnClear').addEventListener('click', clearAll);
-  $('#btnSolveSOR').addEventListener('click', ()=>{ const sor = solveSOR(); renderAll(sor, null); });
-  $('#btnSolveCG').addEventListener('click', ()=>{ const cg = solveCG(); renderAll(null, cg); });
-  $('#btnSolveBoth').addEventListener('click', ()=>{ const sor = solveSOR(); const cg = solveCG(); renderAll(sor, cg); });
+    function readProblem(){
+      let A = getMatrixA(); let b = getVectorB();
+      if (document.querySelector('#cbxScale').checked){
+        const s1 = parseFloat($('#scaleR1').value||'1');
+        const s2 = parseFloat($('#scaleR2').value||'1');
+        const s3 = parseFloat($('#scaleR3').value||'1');
+        const scaled = applyRowScaling(A,b,s1,s2,s3); A = scaled.A2; b = scaled.b2;
+      }
+      return {A,b};
+    }
 
-  $('#omega').addEventListener('input', (e)=> $('#omegaVal').textContent = parseFloat(e.target.value).toFixed(2));
-  $('#cbxScale').addEventListener('change', (e)=> toggleScaling(e.target.checked));
-}
-</script>
+    function solveSOR(){
+      const {A,b} = readProblem();
+      const omega = parseFloat($('#omega').value||'1.2');
+      const tol = parseFloat($('#tolSOR').value||'1e-8');
+      const maxIt = parseInt($('#maxItSOR').value||'1000', 10);
+      return SOR(A,b,{omega,tol,maxIt});
+    }
+    function solveCG(){
+      const {A,b} = readProblem();
+      const tol = parseFloat($('#tolCG').value||'1e-8');
+      const maxIt = parseInt($('#maxItCG').value||'1000', 10);
+      return CG_on_normal_eq(A,b,{tol,maxIt});
+    }
 
+    function renderAll(sor, cg){
+      const {A,b} = readProblem();
+      updateSolutionsTable(sor, cg);
+      updateValidation(A,b,sor,cg);
+      buildResidualChart(sor, cg);
+      buildXCharts(sor, cg);
+      fillIterationTables(sor, cg);
+    }
+
+    function toggleScaling(on){
+      const panel = document.querySelector('#scalePanel');
+      if (on){ panel.classList.remove('opacity-40','pointer-events-none'); }
+      else { panel.classList.add('opacity-40','pointer-events-none'); }
+    }
+
+    function clearAll(){
+      setMatrixA([[0,0,0],[0,0,0],[0,0,0]]); setVectorB([0,0,0]);
+      updateSolutionsTable(null,null);
+      document.querySelector('#valSOR').innerHTML = '';
+      document.querySelector('#valCG').innerHTML = '';
+      fillIterationTables(null,null);
+      if (chartResidual) chartResidual.destroy();
+      if (chartXSOR) chartXSOR.destroy();
+      if (chartXCG) chartXCG.destroy();
+    }
+
+    // ===== INIT =====
+    function init(){
+      buildInputs();
+      loadTransport();  // arranca con el ejemplo correcto
+
+      $('#btnLoadTransport').addEventListener('click', loadTransport);
+      $('#btnClear').addEventListener('click', clearAll);
+      $('#btnSolveSOR').addEventListener('click', ()=>{ const sor = solveSOR(); renderAll(sor, null); });
+      $('#btnSolveCG').addEventListener('click', ()=>{ const cg = solveCG(); renderAll(null, cg); });
+      $('#btnSolveBoth').addEventListener('click', ()=>{ const sor = solveSOR(); const cg = solveCG(); renderAll(sor, cg); });
+
+      $('#omega').addEventListener('input', (e)=> $('#omegaVal').textContent = parseFloat(e.target.value).toFixed(2));
+      $('#cbxScale').addEventListener('change', (e)=> toggleScaling(e.target.checked));
+    }
 
     document.addEventListener('DOMContentLoaded', init);
   </script>
